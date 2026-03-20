@@ -1,0 +1,16 @@
+{
+  "main": "app.js",
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "node --test \"tests/unit/**/test-*\"",
+    "verify": "node --test \"tests/unit/**/test-*\" && node --test \"tests/integration/**/test-*\""
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}
