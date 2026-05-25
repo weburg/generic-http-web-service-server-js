@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { myFunction } from '#src/my-function.js';
+import { Omnibus } from '#src/example/domain/omnibus.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -22,6 +23,25 @@ app.get('/', (req, res) => {
 
 app.get('/generichttpws/:section?', (req, res) => {
   const section = req.params.section || 'home';
+
+  if (section == 'omnibus') {
+    const omnibus = new Omnibus();
+    omnibus.birthtime = new Date(2016, 4, 11, 12, 0, 0, 0);
+    omnibus.sendtime = new Date();
+    omnibus.toppings = ['Cheese', 'Pepperoni', 'Sausage'];
+    omnibus.sides = ['Fries', 'Onion Rings'];
+    omnibus.onFire = false;
+    omnibus.document = null;
+    omnibus.pairing = {
+      'Steak': 'Cabernet Sauvignon',
+      'Fish': 'Chardonnay',
+    };
+
+    const json = JSON.stringify(omnibus);
+
+    res.send(json);
+    return;
+  }
 
   res.render('generichttpws/' + section, {
     requestUri: req.originalUrl
