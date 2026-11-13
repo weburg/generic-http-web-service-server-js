@@ -37,6 +37,16 @@ If using an IDE, right-click the below file and select to run the start script.
 
 Now test the application by going to http://localhost:8081 and make sure everything works.
 
+For development, ensure you are in the project directory. Run:
+
+`npm run dev`
+
+If using an IDE, right-click the `package.json` file and select to run the dev script.
+
+This uses Node.js's built-in watch mode (Node.js 22 or better) to restart the server when the entry point or imported JavaScript modules change.
+
+Now test the application by going to http://localhost:8081.
+
 ### Running the tests
 
 To run unit tests only:
