@@ -1,4 +1,6 @@
 {
+  "version": "1.0.0",
+  "author": "Wren Weburg",
   "main": "app.js",
   "type": "module",
   "imports": {
