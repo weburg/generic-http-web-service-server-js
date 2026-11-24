@@ -15,8 +15,11 @@ test('Omnibus setters wrap dates in their declared GHoWSt types', () => {
 
     assert.ok(omnibus.birthtime instanceof LocalDateTime);
     assert.ok(omnibus.sendtime instanceof OffsetDateTime);
+    assert.equal(omnibus.callsign, 'omni-58-87');
+    assert.equal(omnibus.color, 'yellow');
     assert.equal(Object.hasOwn(Omnibus.prototype, 'toJSON'), false);
     assert.deepEqual(JSON.parse(JSON.stringify(omnibus)), {
+        color: 'yellow',
         birthtime: '2016-05-11T12:00:00.000000',
         sendtime: '2026-11-23T20:40:37.993000+00:00',
         toppings: [],

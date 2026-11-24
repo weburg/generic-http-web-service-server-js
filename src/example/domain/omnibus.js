@@ -1,11 +1,13 @@
 import {LocalDateTime} from '#src/weburg/ghowst/local-date-time.js';
 import {OffsetDateTime} from '#src/weburg/ghowst/offset-date-time.js';
+import {Bus} from '#src/example/domain/bus.js';
 
-export class Omnibus {
+export class Omnibus extends Bus {
     #birthtime = null;
     #sendtime = null;
 
     constructor() {
+        super('omni-58-87');
         Object.defineProperties(this, {
             birthtime: {
                 enumerable: true,
