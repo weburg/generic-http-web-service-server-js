@@ -1,4 +1,4 @@
-function assertValidDate(date) {
+export function assertValidDate(date) {
     if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
         throw new TypeError('Expected a valid Date');
     }
@@ -23,36 +23,12 @@ function formatDateTime(date, useUtc, offset) {
         + `.${pad(milliseconds, 3)}000${offset}`;
 }
 
-class DateTime {
-    #date;
-    #useUtc;
-    #offset;
-
-    constructor(date, useUtc, offset) {
-        assertValidDate(date);
-        this.#date = new Date(date.getTime());
-        this.#useUtc = useUtc;
-        this.#offset = offset;
-        Object.freeze(this);
-    }
-
-    toJSON() {
-        return formatDateTime(this.#date, this.#useUtc, this.#offset);
-    }
-
-    toString() {
-        return this.toJSON();
-    }
+export function formatLocalDateTime(date) {
+    assertValidDate(date);
+    return formatDateTime(date, false, '');
 }
 
-export class LocalDateTime extends DateTime {
-    constructor(date) {
-        super(date, false, '');
-    }
-}
-
-export class OffsetDateTime extends DateTime {
-    constructor(date) {
-        super(date, true, '+00:00');
-    }
+export function formatOffsetDateTime(date) {
+    assertValidDate(date);
+    return formatDateTime(date, true, '+00:00');
 }

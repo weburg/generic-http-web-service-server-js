@@ -1,4 +1,5 @@
-import {LocalDateTime, OffsetDateTime} from '#src/weburg/ghowst/date-time.js';
+import {LocalDateTime} from '#src/weburg/ghowst/local-date-time.js';
+import {OffsetDateTime} from '#src/weburg/ghowst/offset-date-time.js';
 
 export class Omnibus {
     #birthtime = null;
