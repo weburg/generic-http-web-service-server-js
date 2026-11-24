@@ -8,57 +8,51 @@ function pad(value, length = 2) {
     return String(value).padStart(length, '0');
 }
 
-function formatDateTime(date, getters, offset) {
-    assertValidDate(date);
-
-    const [year, month, day, hours, minutes, seconds, milliseconds] =
-        getters.map((getter) => date[getter]());
+function formatDateTime(date, useUtc, offset) {
+    const get = (localMethod, utcMethod) => date[`get${useUtc ? utcMethod : localMethod}`]();
+    const year = get('FullYear', 'UTCFullYear');
+    const month = get('Month', 'UTCMonth');
+    const day = get('Date', 'UTCDate');
+    const hours = get('Hours', 'UTCHours');
+    const minutes = get('Minutes', 'UTCMinutes');
+    const seconds = get('Seconds', 'UTCSeconds');
+    const milliseconds = get('Milliseconds', 'UTCMilliseconds');
 
     return `${pad(year, 4)}-${pad(month + 1)}-${pad(day)}`
         + `T${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
         + `.${pad(milliseconds, 3)}000${offset}`;
 }
 
-export function formatLocalDateTime(date) {
-    return formatDateTime(date, [
-        'getFullYear',
-        'getMonth',
-        'getDate',
-        'getHours',
-        'getMinutes',
-        'getSeconds',
-        'getMilliseconds'
-    ], '');
+class DateTime {
+    #date;
+    #useUtc;
+    #offset;
+
+    constructor(date, useUtc, offset) {
+        assertValidDate(date);
+        this.#date = new Date(date.getTime());
+        this.#useUtc = useUtc;
+        this.#offset = offset;
+        Object.freeze(this);
+    }
+
+    toJSON() {
+        return formatDateTime(this.#date, this.#useUtc, this.#offset);
+    }
+
+    toString() {
+        return this.toJSON();
+    }
 }
 
-export function formatOffsetDateTime(date) {
-    return formatDateTime(date, [
-        'getUTCFullYear',
-        'getUTCMonth',
-        'getUTCDate',
-        'getUTCHours',
-        'getUTCMinutes',
-        'getUTCSeconds',
-        'getUTCMilliseconds'
-    ], '+00:00');
+export class LocalDateTime extends DateTime {
+    constructor(date) {
+        super(date, false, '');
+    }
 }
 
-function withDateTimeSerialization(date, format) {
-    assertValidDate(date);
-    const wrappedDate = new Date(date.getTime());
-    Object.defineProperty(wrappedDate, 'toJSON', {
-        configurable: true,
-        value() {
-            return format(wrappedDate);
-        }
-    });
-    return wrappedDate;
-}
-
-export function asLocalDateTime(date) {
-    return withDateTimeSerialization(date, formatLocalDateTime);
-}
-
-export function asOffsetDateTime(date) {
-    return withDateTimeSerialization(date, formatOffsetDateTime);
+export class OffsetDateTime extends DateTime {
+    constructor(date) {
+        super(date, true, '+00:00');
+    }
 }

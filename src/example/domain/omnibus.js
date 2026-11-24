@@ -1,29 +1,34 @@
-import {asLocalDateTime, asOffsetDateTime} from '#src/weburg/ghowst/date-time.js';
+import {LocalDateTime, OffsetDateTime} from '#src/weburg/ghowst/date-time.js';
 
 export class Omnibus {
+    #birthtime = null;
+    #sendtime = null;
+
     constructor() {
-        this.birthtime = null;
-        this.sendtime = null;
+        Object.defineProperties(this, {
+            birthtime: {
+                enumerable: true,
+                get: () => this.#birthtime,
+                set: (value) => {
+                    this.#birthtime = value === null || value instanceof LocalDateTime
+                        ? value
+                        : new LocalDateTime(value);
+                }
+            },
+            sendtime: {
+                enumerable: true,
+                get: () => this.#sendtime,
+                set: (value) => {
+                    this.#sendtime = value === null || value instanceof OffsetDateTime
+                        ? value
+                        : new OffsetDateTime(value);
+                }
+            }
+        });
         this.toppings = [];
         this.sides = [];
         this.onFire = false;
         this.document = null;
         this.pairing = [];
-    }
-
-    toJSON() {
-        return Object.fromEntries(Object.entries(this).map(([field, value]) => {
-            if (value === null) {
-                return [field, value];
-            }
-
-            if (field === 'birthtime') {
-                return [field, asLocalDateTime(value)];
-            }
-            if (field === 'sendtime') {
-                return [field, asOffsetDateTime(value)];
-            }
-            return [field, value];
-        }));
     }
 }
