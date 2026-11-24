@@ -39,6 +39,7 @@ app.get('/generichttpws/:section?', (req, res) => {
 
         const json = JSON.stringify(omnibus);
 
+        res.set('Content-Type', 'application/json');
         res.send(json);
         return;
     }

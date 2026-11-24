@@ -1,3 +1,5 @@
+import {asLocalDateTime, asOffsetDateTime} from '#src/weburg/ghowst/date-time.js';
+
 export class Omnibus {
     constructor() {
         this.birthtime = null;
@@ -7,5 +9,21 @@ export class Omnibus {
         this.onFire = false;
         this.document = null;
         this.pairing = [];
+    }
+
+    toJSON() {
+        return Object.fromEntries(Object.entries(this).map(([field, value]) => {
+            if (value === null) {
+                return [field, value];
+            }
+
+            if (field === 'birthtime') {
+                return [field, asLocalDateTime(value)];
+            }
+            if (field === 'sendtime') {
+                return [field, asOffsetDateTime(value)];
+            }
+            return [field, value];
+        }));
     }
 }
