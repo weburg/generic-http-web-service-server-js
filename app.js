@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 app.get('/generichttpws/:section?', (req, res) => {
     const section = req.params.section || 'home';
 
-    if (section == 'omnibus') {
+    if (section == 'omnibusses') {
         const omnibus = new Omnibus();
         omnibus.birthtime = new Date(2016, 4, 11, 12, 0, 0, 0);
         omnibus.sendtime = new Date();
